@@ -61,12 +61,16 @@
          */
         this._handlers = {
             'prepared.owl.carousel': $.proxy(function (e) {
+                console.log(this.owl.options);
                 if (e.namespace && this.owl.options.thumbs && !this.owl.options.thumbImage && !this.owl.options.thumbsPrerendered && !this.owl.options.thumbImage) {
                     if ($(e.content).find('[data-thumb]').attr('data-thumb') !== undefined) {
                         this._thumbcontent.push($(e.content).find('[data-thumb]').attr('data-thumb'));
                     }
                 } else if (e.namespace && this.owl.options.thumbs && this.owl.options.thumbImage) {
                     var innerImage = $(e.content).find('img');
+                    if(this.owl.options.sourceImage && !!window.HTMLPictureElement) {
+                        innerImage = $(e.content).find('picture');
+                    }
                     this._thumbcontent.push(innerImage);
                 }
             }, this),
@@ -103,6 +107,7 @@
     Thumbs.Defaults = {
         thumbs: true,
         thumbImage: false,
+        sourceImage: false,
         thumbContainerClass: 'owl-thumbs',
         thumbItemClass: 'owl-thumb-item',
         moveThumbsInside: false
@@ -168,6 +173,15 @@
             for (i = 0; i < this._thumbcontent.length; ++i) {
                 this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + '>' + this._thumbcontent[i] + '</button>');
             }
+        } else if((options.thumbImage && options.sourceImage)) {
+            for (i = 0; i < this._thumbcontent.length; ++i) {
+                console.log(this._thumbcontent[i][0]);
+                var button = document.createElement('button');
+                var $button = $(button).addClass(options.thumbItemClass);
+                $button.append($(this._thumbcontent[i][0]).clone());
+                this._thumbcontent._thumbcontainer.append($button);
+            }
+            console.log(this._thumbcontent);
         } else {
             for (i = 0; i < this._thumbcontent.length; ++i) {
                 this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + '><img src="' + this._thumbcontent[i].attr('src') + '" alt="' + this._thumbcontent[i].attr('alt') + '" /></button>');
