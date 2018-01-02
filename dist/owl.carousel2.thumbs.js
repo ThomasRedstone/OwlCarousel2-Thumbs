@@ -1,4 +1,4 @@
-/*! owl.carousel2.thumbs - v0.1.8 | (c) 2016 @gijsroge | MIT license | https://github.com/gijsroge/OwlCarousel2-Thumbs */
+/*! owl.carousel2.thumbs - v0.1.8 | (c) 2018 @gijsroge | MIT license | https://github.com/gijsroge/OwlCarousel2-Thumbs */
 /**
  * Thumbs Plugin
  * @version 2.0.0
@@ -68,6 +68,9 @@
                     }
                 } else if (e.namespace && this.owl.options.thumbs && this.owl.options.thumbImage) {
                     var innerImage = $(e.content).find('img');
+                    if(this.owl.options.sourceImage && !!window.HTMLPictureElement) {
+                        innerImage = $(e.content).find('picture');
+                    }
                     this._thumbcontent.push(innerImage);
                 }
             }, this),
@@ -104,6 +107,7 @@
     Thumbs.Defaults = {
         thumbs: true,
         thumbImage: false,
+        sourceImage: false,
         thumbContainerClass: 'owl-thumbs',
         thumbItemClass: 'owl-thumb-item',
         moveThumbsInside: false
@@ -168,6 +172,17 @@
         if (!options.thumbImage) {
             for (i = 0; i < this._thumbcontent.length; ++i) {
                 this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + '>' + this._thumbcontent[i] + '</button>');
+            }
+        } else if((options.thumbImage && options.sourceImage)) {
+            for (i = 0; i < this._thumbcontent.length; ++i) {
+                var button = document.createElement('button');
+                var $button = $(button).addClass(options.thumbItemClass);
+                var $image = $(this._thumbcontent[i][0]).clone();
+                $image.attr('class', '');
+                $image.attr('id', '');
+                $image.attr('style', '');
+                $button.append($image);
+                this._thumbcontent._thumbcontainer.append($button);
             }
         } else {
             for (i = 0; i < this._thumbcontent.length; ++i) {

@@ -1,4 +1,4 @@
-﻿﻿/**
+﻿/**
  * Thumbs Plugin
  * @version 2.0.0
  * @author Gijs RogÃ©
@@ -61,7 +61,6 @@
          */
         this._handlers = {
             'prepared.owl.carousel': $.proxy(function (e) {
-                console.log(this.owl.options);
                 if (e.namespace && this.owl.options.thumbs && !this.owl.options.thumbImage && !this.owl.options.thumbsPrerendered && !this.owl.options.thumbImage) {
                     if ($(e.content).find('[data-thumb]').attr('data-thumb') !== undefined) {
                         this._thumbcontent.push($(e.content).find('[data-thumb]').attr('data-thumb'));
@@ -175,13 +174,15 @@
             }
         } else if((options.thumbImage && options.sourceImage)) {
             for (i = 0; i < this._thumbcontent.length; ++i) {
-                console.log(this._thumbcontent[i][0]);
                 var button = document.createElement('button');
                 var $button = $(button).addClass(options.thumbItemClass);
-                $button.append($(this._thumbcontent[i][0]).clone());
+                var $image = $(this._thumbcontent[i][0]).clone();
+                $image.attr('class', '');
+                $image.attr('id', '');
+                $image.attr('style', '');
+                $button.append($image);
                 this._thumbcontent._thumbcontainer.append($button);
             }
-            console.log(this._thumbcontent);
         } else {
             for (i = 0; i < this._thumbcontent.length; ++i) {
                 this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + '><img src="' + this._thumbcontent[i].attr('src') + '" alt="' + this._thumbcontent[i].attr('alt') + '" /></button>');
