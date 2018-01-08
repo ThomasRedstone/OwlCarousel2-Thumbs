@@ -70,6 +70,7 @@
                     var innerImage = $(e.content).find('img');
                     if(this.owl.options.sourceImage && !!window.HTMLPictureElement) {
                         innerImage = $(e.content).find('picture');
+                        console.log(innerImage, innerImage.length);
                     }
                     this._thumbcontent.push(innerImage);
                 }
@@ -181,6 +182,7 @@
                 $image.attr('class', '');
                 $image.attr('id', '');
                 $image.attr('style', '');
+                $image.find('img').attr('style', '');
                 $button.append($image);
                 this._thumbcontent._thumbcontainer.append($button);
             }

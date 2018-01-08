@@ -67,6 +67,7 @@
                     }
                 } else if (e.namespace && this.owl.options.thumbs && this.owl.options.thumbImage) {
                     var innerImage = $(e.content).find('img');
+                    // @todo: if sourceImage is on, but an img tag used, this won't work, look at alternatives. check for picture tag present in the if. 
                     if(this.owl.options.sourceImage && !!window.HTMLPictureElement) {
                         innerImage = $(e.content).find('picture');
                     }
@@ -180,6 +181,7 @@
                 $image.attr('class', '');
                 $image.attr('id', '');
                 $image.attr('style', '');
+                $image.find('img').attr('style', '');
                 $button.append($image);
                 this._thumbcontent._thumbcontainer.append($button);
             }
